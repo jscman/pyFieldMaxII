@@ -3,7 +3,7 @@ import os, time, sys
 
 class FieldMax(object):
 
-    def __init__(self, dllPath):
+    def __init__(self, dllPath=r'C:\Program Files (x86)\Coherent\FieldMaxII PC\Drivers\Win10\FieldMax2Lib\x64\FieldMax2Lib.dll'):
         """
         Connect to Library
         """
@@ -25,10 +25,10 @@ class FieldMax(object):
         return dll.conn(c.c_int32(0)) 
 
     def deInit(self):
-        dll_conn = self.fm2LibDeInit
+        dll_conn = self.o.fm2LibDeInit
         dll_conn.restype = c.c_int16
         dll_conn.argtypes = []
-        return dll.conn() 
+        return dll_conn() 
 
     def _bytes2values(self, l):
         float_p = c.cast(l, c.POINTER(c.c_float))
@@ -97,7 +97,21 @@ class FieldMax(object):
         dll_conn.restype = c.c_int16
         dll_conn.argtypes = [c.c_int32]
         return dll_conn(c.c_int32(0))
-    
+
+    def zeroing(self):
+        self._zeroStart()
+        ans = self._zeroReply()
+        while ans == 1:
+            ans = self._zeroReply()
+ 
 if __name__ == "__main__":
-  # add example here
-  pass
+    import fieldmax
+    
+    FMII = fieldmax.FieldMax(r'C:\Program Files (x86)\Coherent\FieldMaxII PC\Drivers\Win10\FieldMax2Lib\x64\FieldMax2Lib.dll')
+    FMII.openDriver()
+    print( FMII.get_SerialNumber() )
+    FMII.sync()
+    print( FMII.get_dataPoint() )
+    FMII.zeroing()
+    print( FMII.get_dataPoint() )
+    FMII.closeDriver()
