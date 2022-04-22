@@ -1,4 +1,5 @@
 # pyFieldMaxII
+Coherent Field Max powermeter control
 A python wrapper for the FieldMax2Lib.dll.
 
 ```
