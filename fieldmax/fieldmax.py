@@ -22,7 +22,7 @@ class FieldMax(object):
         dll_conn = self.o.fm2LibCloseDriver
         dll_conn.restype = c.c_int16
         dll_conn.argtypes = [c.c_int32]
-        return dll.conn(c.c_int32(0)) 
+        return dll_conn(c.c_int32(0)) 
 
     def deInit(self):
         dll_conn = self.o.fm2LibDeInit
